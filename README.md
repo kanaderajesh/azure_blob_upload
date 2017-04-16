@@ -5,15 +5,15 @@ This small web app will be used to upload images to azure blob.
 
 **Tooling**
 
-> Node
-> Visual studio code
-> Gulp ( task runner )
-> Express js
+> Node.
+> Visual studio code.
+> Gulp ( task runner ).
+> Express js.
 
 **Prerequisite**
 
-> Azure storage account
-> Azure storage account name and key will be passed from environment
+> Azure storage account.
+> Azure storage account name and key will be passed from environment.
 > Goto services/blobstorage.js and configure your storage account credentails.
 
     process.env['AZURE_STORAGE_ACCOUNT'] = 'your_azure_storage_account';
