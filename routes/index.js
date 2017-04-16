@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var Busboy = require('busboy');
+
+var Busboy = require('busboy'),
+inspect = require('util').inspect,
+azureBlobService = require('../services/blobstorage');
 
 /* GET home page. */
 
@@ -11,22 +14,20 @@ router.get('/', function(req, response) {
 router.post("/upload", function (request, response) {                                               
     var busboy = new Busboy({ headers: request.headers });
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-      console.log('File [' + fieldname + ']: filename: ' + filename);
-      file.on('data', function(data) {
-        console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
+      azureBlobService.saveToBlob(filename,file, function ( err, result) {
+          if(err){
+            response.send(500,err)
+          } else {
+            response.redirect('/show?name=' + encodeURI(filename));
+          }
       });
-      file.on('end', function() {
-        console.log('File [' + fieldname + '] Finished');
-      });
-    });
-    busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
-      console.log('Field [' + fieldname + ']: value: ' + inspect(val));
-    });
-    busboy.on('finish', function() {
-      console.log('Done parsing form!');
-      response.writeHead(303, { Connection: 'close', Location: '/' });
-      response.end();
     });
     request.pipe(busboy);                                                                                                  
 });  
+router.get('/show', function(req, res) {
+  res.render('show', {
+    name: req.query.name,
+    url: azureBlobService.getUrl(req.query.name)
+  })
+})
 module.exports = router;

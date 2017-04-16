@@ -14,6 +14,12 @@ This small web app will be used to upload images to azure blob.
 
 > Azure storage account
 > Azure storage account name and key will be passed from environment
+> Goto services/blobstorage.js and configure your storage account credentails.
+
+    process.env['AZURE_STORAGE_ACCOUNT'] = 'your_azure_storage_account';
+    process.env['AZURE_STORAGE_KEY'] = 'your_azure_storage_account_key'
+    process.env['AZURE_STORAGE_CONNECTION_STRING'] = 'your_azure_storage_account_connection_string';
+> Replace the above variables with correct credenatils.
 
 **Steps to run**
 
